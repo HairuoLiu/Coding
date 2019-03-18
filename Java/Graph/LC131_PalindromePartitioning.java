@@ -20,7 +20,7 @@ import java.util.List;
  * @author Liu.3502
  * @created 2018-03-24 下午12:08
  */
-public class LC131_palindrome_partitioning{
+public class LC131_PalindromePartitioning{
 
 /* The knows API is defined in the parent class Relation.
       boolean knows(int a, int b); */

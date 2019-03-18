@@ -31,7 +31,7 @@ import java.util.Set;
  * @author Liu.3502
  * @created 2018-03-24 下午12:08
  */
-public class LC332_Reconstruct_Itinerary{
+public class LC332_ReconstructItinerary{
 
   public static class Interval {
 

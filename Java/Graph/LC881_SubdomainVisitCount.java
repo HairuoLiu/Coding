@@ -41,7 +41,7 @@ import java.util.Queue;
  * @author Liu.3502
  * @created 2018-03-24 下午12:08
  */
-public class LC811_subdomain_visit_count{
+public class LC811_SubdomainVisitCount{
 
   public static void main(String[] args) {
    String[] word = {"9001 discuss.leetcode.com"};

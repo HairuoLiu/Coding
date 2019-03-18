@@ -33,7 +33,7 @@ import java.util.Set;
  * @author Liu.3502
  * @created 2018-03-24 下午12:08
  */
-public class LC934_Shortest_Bridge{
+public class LC934_ShortestBridge{
 
   public static class Interval {
       int start;

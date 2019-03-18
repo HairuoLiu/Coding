@@ -35,7 +35,7 @@
  * @author Liu.3502
  * @created 2018-03-24 下午12:08
  */
-public class LC289_GameofLife{
+public class LC289_GameOfLife{
 
   public static class Interval {
       int start;

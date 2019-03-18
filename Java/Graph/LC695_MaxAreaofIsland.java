@@ -23,7 +23,7 @@
  * @author Liu.3502
  * @created 2018-03-24 下午12:08
  */
-public class LC695_MaxAreaofIsland{
+public class LC695_MaxAreaOfIsland{
 
   public static class Interval {
       int start;

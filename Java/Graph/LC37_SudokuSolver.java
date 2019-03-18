@@ -25,7 +25,7 @@
  * @author Liu.3502
  * @created 2018-03-24 下午12:08
  */
-public class LC37_Sudoku_Solver{
+public class LC37_SudokuSolver{
 
 /* The knows API is defined in the parent class Relation.
       boolean knows(int a, int b); */

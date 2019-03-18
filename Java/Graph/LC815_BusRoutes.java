@@ -31,7 +31,7 @@ import test.PracticeClass17.B;
  * @author Liu.3502
  * @created 2018-03-24 下午12:08
  */
-public class LC815_bus_routes {
+public class LC815_BusRoutes {
 
   public static void main(String[] args) {
    // char [][] grid = {{'A'}};
