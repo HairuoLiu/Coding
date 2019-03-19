@@ -1,5 +1,3 @@
-package LeetPlan.BinarySearch.Plan1;
-
 
 /**
  *
