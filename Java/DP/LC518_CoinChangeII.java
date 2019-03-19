@@ -70,6 +70,42 @@ public class LC518_CoinChangeII{
     return m[amount];
   }
 
+  public static int change(int amount, int[] coins) {
+    //sanity check
+    if(amount == 0) {
+      return 1;
+    }
+    if(coins.length == 0){
+      return 0;
+    }
+    int[][] memo = new int[amount+1][coins.length];
+
+    for(int [] i: memo){
+      Arrays.fill(i,-1);
+    }
+    return changeII(amount,coins,0,memo);
+  }
+
+  public static int changeII(int amount, int[] coins,int index,int[][] memo) {
+    //base case
+    if(amount < 0){
+      return 0;
+    }
+    if(amount == 0){
+      return 1;
+    }
+    if(memo[amount][index] != -1){
+      return memo[amount][index];
+    }
+    int count = 0;
+    //induction rule
+    for(int i = index; i < coins.length; ++i){
+      count += changeII(amount-coins[i],coins,i,memo);
+    }
+    memo[amount][index] = count;
+    return count;
+  }
+
 
 
 }
