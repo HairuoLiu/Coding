@@ -16,7 +16,7 @@ import java.util.TreeMap;
  * @created2018-01-31 下午6:45
  */
 
-public class lc203_RemoveLinkedListElements {
+public class LC203_RemoveLinkedListElements {
 
   public static class ListNode {
       int val;
