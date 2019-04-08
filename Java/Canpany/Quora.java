@@ -460,6 +460,72 @@ public class Quora{
     	return root;
     }
 
+    //LC 113. Path Sum II
+    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+        List<List<Integer>> res = new ArrayList<>();
+        pathS(root,res,new ArrayList<>(),sum);
+        return res;
+    }
+    
+    public void pathS(TreeNode root, List<List<Integer>> res, List<Integer> cur, int sum){
+        if(root == null){
+            return;
+        }
+        cur.add(root.val);
+        if(root.left == null && root.right == null){
+            if(sum == root.val){   
+                res.add(new ArrayList<>(cur));
+            }
+            cur.remove(cur.size() - 1);
+            return;
+        }
+        
+        pathS(root.left,res,cur,sum - root.val);
+        pathS(root.right,res,cur,sum - root.val);
+        
+        cur.remove(cur.size() - 1);
+    }
+ 
+
+    //LC 437. Path Sum III
+    //BF
+    public int pathSum(TreeNode root, int sum) {
+        if(root == null) return 0;
+        return  pathS(root,sum) + pathSum(root.left,sum) + pathSum(root.right,sum);
+    }
+    
+    public int pathS(TreeNode root, int sum){
+        if(root == null){
+            return 0;
+        }
+        int res = (root.val == sum ? 1 : 0);
+        res += pathS(root.left,sum - root.val) + pathS(root.right,sum - root.val);
+        return res;
+    }
+
+    //prefix sum
+    public int pathSum(TreeNode root, int sum) {
+        if(root == null) return 0;
+        List<Integer> list = new LinkedList<>();
+        list.add(0);
+        return pathS(root,sum,list);
+    }
+    
+    public int pathS(TreeNode root, int sum, List<Integer> sumList){
+        if(root == null){
+            return 0;
+        }
+        sumList.add(sumList.get(sumList.size()-1) + root.val);
+        int res = pathS(root.left,sum,sumList) + pathS(root.right,sum,sumList);
+        int prev = sumList.remove(sumList.size()-1);
+        for(int last : sumList){
+            if(prev - last == sum){
+                res++;
+            }
+        }
+        return res;
+    }
+
     //2019 - 2 - 8
     /* f(0)="";			0	2^0
 	 * f(1)="0";	 	1	2^1
