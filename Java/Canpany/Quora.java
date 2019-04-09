@@ -8,6 +8,115 @@ public class Quora{
 		// System.out.print(res);
 	}
 
+	// 2019 - 4 - 7 / 2019 - 2 - 21
+	// 求所有的数字组合的乘
+	// prime numbers， 比如[2,3,5] 
+	// So this is a All subsets problem
+	// BF
+	public static List<Integer> getAllPrime(int[] arr){
+		List<Integer> res = new ArrayList<>();
+		if(sanityCheck(arr)) return res;
+		combinations(arr,0,1,res);
+		res.remove(1);
+		return res;
+	}
+
+	public static void combinations(int[] arr, int index,int  cur, List<Integer> res){
+		res.add(cur);
+		if(index == arr.length){
+			return;
+		}
+		combinations(arr, index + 1, cur * arr[index], res);
+		combinations(arr, index + 1, cur,res);
+	}
+
+	//follow up
+	//每层只考虑一个
+	//本质控制每一次选择后 之后不会再选到当前的这个值
+	public static void combinationsFollowSort(int[] arr, int index,int cur, List<Integer> res){
+		res.add(cur);
+		if(index == arr.length){
+			return;
+		}
+		combinationsFollow(arr,index+1, cur * arr[index], res);					//add the first arr[index]
+		while(index < arr.length - 1 && arr[index] == arr[index + 1]){			//skio all the same value
+			++index;
+		}
+		combinationsFollow(arr,index + 1, cur * arr[index], res);
+	}
+
+	private static boolean sanityCheck(int[] arr){
+		return arr == null || arr.length == 0;
+	}
+
+	// 2019 - 4 - 6 /
+	// maxSubsetSum
+	// 
+	// public static void main(String[] args) {
+	// 	int[] n = {3, 2, 1 ,2, 2, 1 , 1,  1};
+	// 	System.out.print(getMax(n));
+	// }
+
+	public static int getMax(int[] arr){
+		int res = 0;
+		//sanity check
+		if( arr == null || arr.length == 0) {
+			return res;
+		}
+		//count and store by order
+		TreeMap<Integer,Integer> count = new TreeMap<>();			//key: number, value: last index for the number;
+		buildMemo(count,arr);
+		List<Integer> orderlist = new ArrayList(count.keySet());
+		return getResult(count,orderlist,0,new HashMap<>());
+	}
+	
+	//DP - 用小空间
+	public static int getResult(TreeMap<Integer,Integer> count, List<Integer> orderlist, int index,HashMap<Integer,Integer> memo){
+		if( index >= orderlist.size()){
+			return 0;
+		}
+		//memo
+		if(memo.containsKey(index)) {
+			return memo.get(index);
+		}
+		int curNum = orderlist.get(index);
+		int countNum = count.get(curNum);
+		int res = curNum * countNum;
+		if(index + 1 < orderlist.size() && orderlist.get(index + 1) == curNum + 1) {
+			// curNum + 1 == nextNum;
+			res = Math.max(res + getResult(count,orderlist,index + 2,memo), getResult(count,orderlist,index + 1,memo));
+		}else {
+			// curNum + 1 != nextNum;
+			res += getResult(count,orderlist,index + 1,memo);
+		}
+		//memo
+		memo.put(index,res);
+		return res;	
+	}
+	
+
+	public static int getResult(int[]memo, int index){
+		if(index >= memo.length){
+			return 0;
+		}
+		int res = memo[index] * index + getResult(memo,index + 2);
+ 		return Math.max(res,getResult(memo,index + 1));
+	}
+	
+	//用定长arr
+	private static void buildMemo(int[]memo, int[] arr){
+		for(int i : arr){
+			memo[i]++;
+		}
+	}
+
+	//用动态map
+	private static void buildMemo(TreeMap<Integer,Integer>memo,int[] arr){
+		for(int i : arr){
+			memo.put(i,memo.getOrDefault(i, 0) + 1);
+		}
+	}
+
 	// 2019 - 4 - 2
 	// Given a string, rearrange it so that no same characters are adjacent to each other.
 	public static String rearrangeString(String str){
@@ -27,7 +136,7 @@ public class Quora{
 			Character largest = map.firstKey();
 			Character secLarget = map.higherKey(largest);
 			if(largest != null){
-				res.  nd(largest);
+				res.append(largest);
 				int count = map.remove(largest);
 				if( count > 1){
 					map.put(largest,count - 1);
@@ -54,7 +163,11 @@ public class Quora{
 		if(index == c.length){
 			return checkVaild(c);
 		}
+		//优化:相同的不用换2遍
+		Set<Character> visit = new HashSet<>();
 		for(int i = index; i < c.length; ++i){
+			if(!visit.add(c[i])) continue;
+
 			swap(c,index,i);
 			if(backTrack(c,index + 1)){
 				return true;
@@ -191,6 +304,66 @@ public class Quora{
 		return res;
 	}
 
+	// Last Permutation Next Permutation
+	// 
+	// public static void main(String[] args) {
+	// 	int[] n  = {0,0};
+	// 	nextPermutation(n);
+	// 	//lastPermutation(n);
+	// 	System.out.print("");
+	// }
+
+    public static void nextPermutation(int[] nums) {
+        //sanity check
+         if(nums == null || nums.length == 0 ){
+             return;
+         }
+         TreeMap<Integer,Integer> memo = new TreeMap<>();
+         for(int i = nums.length -1; i >= 0 ;--i){
+             Integer larger = memo.higherKey(nums[i]);
+             if(larger != null){
+                 swap(nums,i, memo.get(larger));
+                 Arrays.sort(nums,i+1,nums.length);
+                 return;
+             }
+             memo.put(nums[i],i);
+             if(i == 0){
+                Arrays.sort(nums); 
+             }
+         } 
+     }
+     
+    public static void lastPermutation(Integer[] nums) {	//不能是
+        //sanity check
+         if(nums == null || nums.length == 0 ){
+             return;
+         }
+         TreeMap<Integer,Integer> memo = new TreeMap<>();
+         for(int i = nums.length -1; i >= 0 ;--i){
+             Integer larger = memo.lowerKey(nums[i]);
+             if(larger != null){
+                 swap(nums,i, memo.get(larger));
+                 Arrays.sort(nums,i+1,nums.length,Collections.reverseOrder());
+                 return;
+             }
+             memo.put(nums[i],i);
+             if(i == 0){
+                Arrays.sort(nums); 
+             }
+         } 
+     }
+    
+    public static void swap(Integer[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+	
+     public static void swap(int[] nums, int i, int j){
+         int temp = nums[i];
+         nums[i] = nums[j];
+         nums[j] = temp;
+     }
 
 	// 2019 - 3 - 28
 	// we need some way to record the data in last 5 minutes for any current timestamp, because we only care about last 5 minutes, 
@@ -386,37 +559,7 @@ public class Quora{
 		countNum(root.left,o,o,res);
 		countNum(root.right,o,o,res);
 	}
-
-	//2019 - 2 - 21
-	//求所有的数字组合的乘
-	public static List<Integer> getAllTime(int[] arr){
-		//sanity check
-		if(arr == null || arr.length == 0){
-			return new ArrayList<>();
-		}
-		Set<Integer> res = new HashSet<>();
-
-		Set<Integer> happen = new HashSet<>();
-		for(int i = 0; i < arr.length; ++i){
-			if(!happen.add(arr[i])){
-				getAll(arr, i + 1, arr[i], res);
-			}
-		}
-		return new ArrayList<>(res);
-	}
 	
-	public static void getAll(int[] arr, int index, int cur, Set<Integer> res){
-		if(index == arr.length){
-			res.add(cur);
-		}
-		Set<Integer> happen = new HashSet<>();
-		for(int i = index; i < arr.length; ++i){
-			if(!happen.add(arr[i])){
-				getAll(arr, i + 1,cur * arr[i], res);
-			}
-		}
-	}
- 
 	//LC297
 	//Encodes a tree to a single string.
     public String serialize(TreeNode root) {
@@ -461,13 +604,13 @@ public class Quora{
     }
 
     //LC 113. Path Sum II
-    public List<List<Integer>> pathSum(TreeNode root, int sum) {
+    public static List<List<Integer>> pathSum(TreeNode root, int sum) {
         List<List<Integer>> res = new ArrayList<>();
         pathS(root,res,new ArrayList<>(),sum);
         return res;
     }
     
-    public void pathS(TreeNode root, List<List<Integer>> res, List<Integer> cur, int sum){
+    public static void pathS(TreeNode root, List<List<Integer>> res, List<Integer> cur, int sum){
         if(root == null){
             return;
         }
@@ -485,16 +628,15 @@ public class Quora{
         
         cur.remove(cur.size() - 1);
     }
- 
 
     //LC 437. Path Sum III
     //BF
-    public int pathSum(TreeNode root, int sum) {
+    public static int pathSumIII(TreeNode root, int sum) {
         if(root == null) return 0;
-        return  pathS(root,sum) + pathSum(root.left,sum) + pathSum(root.right,sum);
+        return  pathS(root,sum) + pathSumIII(root.left,sum) + pathSumIII(root.right,sum);
     }
     
-    public int pathS(TreeNode root, int sum){
+    public static  int pathS(TreeNode root, int sum){
         if(root == null){
             return 0;
         }
@@ -504,14 +646,14 @@ public class Quora{
     }
 
     //prefix sum
-    public int pathSum(TreeNode root, int sum) {
+    public static int pathSumPrefix(TreeNode root, int sum) {
         if(root == null) return 0;
         List<Integer> list = new LinkedList<>();
         list.add(0);
         return pathS(root,sum,list);
     }
     
-    public int pathS(TreeNode root, int sum, List<Integer> sumList){
+    public static int pathS(TreeNode root, int sum, List<Integer> sumList){
         if(root == null){
             return 0;
         }
