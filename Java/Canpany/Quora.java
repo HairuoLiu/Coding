@@ -8,6 +8,31 @@ public class Quora{
 		// System.out.print(res);
 	}
 
+
+	public static List<String> breakString(String s){
+
+		StringBuilder  sb = new StringBuilder();
+		for(int i = 0 ;= i < s.length;){
+			char c = s.charAt(i);
+			if(c == '"'){
+				++i;
+				while(i < s.length && s.charAt(i) != ' " '){
+					sb.append(s.charAt(i++));
+				}
+				if(sb.length != 0){
+					res.add(sb.toString);
+				}
+				sb = new StringBuilder();
+			}else if(c == ' '){
+				while()
+				sb = new StringBuilder();
+			}else{
+
+			}
+		}
+
+	}
+
 	// 2019 - 4 - 7 / 2019 - 2 - 21
 	// 求所有的数字组合的乘
 	// prime numbers， 比如[2,3,5] 
@@ -38,11 +63,11 @@ public class Quora{
 		if(index == arr.length){
 			return;
 		}
-		combinationsFollow(arr,index+1, cur * arr[index], res);					//add the first arr[index]
+		combinationsFollowSort(arr,index+1, cur * arr[index], res);					//add the first arr[index]
 		while(index < arr.length - 1 && arr[index] == arr[index + 1]){			//skio all the same value
 			++index;
 		}
-		combinationsFollow(arr,index + 1, cur * arr[index], res);
+		combinationsFollowSort(arr,index + 1, cur * arr[index], res);
 	}
 
 	private static boolean sanityCheck(int[] arr){

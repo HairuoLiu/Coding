@@ -1,9 +1,9 @@
 import java.util.*;
 public class DrawBridge{
 
-	// public static void main(String[] args) {
+	public static void main(String[] args) {
 		
-	// }
+	}
 	
 	//LC 273. Integer to English Words 给数字返回英文单词
 	private static final String[] LESS_THAN_20 = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
@@ -82,15 +82,14 @@ public class DrawBridge{
 
 	// k nearly sort
 	// 
-	public static void main(String[] args) {
-		int[] A = {6, 5, 3, 2, 8, 10, 9};
-		//bfNearlySorted(A,3);
-		insertionSortFollow(A,3);
-		for(int i : A){
-			System.out.print(i + " ");
-		}
-		
-	}
+	// public static void main(String[] args) {
+	// 	int[] A = {6, 5, 3, 2, 7,5,8,10,9};
+	// 	//bfNearlySorted(A,3);
+	// 	insertionSortFollow(A,3);
+	// 	for(int i : A){
+	// 		System.out.print(i + " ");
+	// 	}
+	// }
 
 	//O(N*K)
  	public static void bfNearlySorted(int A[], int size){
@@ -133,6 +132,7 @@ public class DrawBridge{
 				Integer smallestValue = tMap.firstKey(), firstKey = i - size;	//O(logk)
 				int firstValue = indexMap.remove(firstKey);						//O(1)							
 				tMap.get(firstValue).remove(firstKey);							//remove first index from valueMap time: o(log(size)) worst case k
+				
 				if(firstValue > smallestValue){
 					//get All
 					Integer smallestKey = tMap.get(smallestValue).first();  	//o(log(size)) worst case k
@@ -145,6 +145,10 @@ public class DrawBridge{
 					}
 					tMap.get(firstValue).add(smallestKey);						//o(log(size)) worst case k
 					indexMap.put(smallestKey,firstValue);
+				}
+				//if firstValue is empty
+				if(tMap.get(firstValue).size() == 0){
+					tMap.remove(firstValue);
 				}
 			}
 		}
@@ -162,6 +166,7 @@ public class DrawBridge{
 			this.highet++;
 		}
 	}
+
 	public static TreeNode LCAdeepest(TreeNode root){
 		if(root == null){
 			return null;
@@ -174,6 +179,7 @@ public class DrawBridge{
 
 		Node left = getDeepest(root.left);
 		Node right =  getDeepest(root.right);
+
 		if(left.highet > right.highet){
 			left.addHighet();
 			return left;
@@ -181,7 +187,8 @@ public class DrawBridge{
 			right.addHighet();
 			return right;
 		}else{
-			 left.node = root;
+			left.addHighet();
+			left.node = root;
 			return left;
 		}
 	}
