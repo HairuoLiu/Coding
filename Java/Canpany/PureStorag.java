@@ -45,48 +45,35 @@ public class Amazon{
 	}
 
 	class TaskDispatchingSystem{
-
-		private Queue<Task> TaskQ;
-		private volatile boolean Istriggering;
+		private volatile boolean striggering;
 		private Lock lock = new ReentrantLock();
 		public TaskDispatchingSystem(){
 			this.TaskQ = new LinkedList<>();
 		}
 
-		//用synchronized
-		public synchronized void addTask(Task nTask){
-			if(Istriggering){
-				task.start();
-			}else{
-				TaskQ.offer(nTask);
-			}
-		}
-
-		//用lock
+		//用synchronized	  或者 用lock
 		public void addTask(Task nTask){
-			if(Istriggering){
-				task.start();
-			}else{
-				lock.lock();
-				try{
+			lock.lock();
+			try{
+				if(Istriggering){
+					task.start();
+				}else{
 					TaskQ.offer(nTask);
-				}finally{
-					lock.unlock;
 				}
+			}finally{
+				lock.unlock();
 			}
 		}
 
-
-		public synchronized void trigger(){
-			 try {
-    			fired = true;
+		public void trigger(){
+			try {
+    			istriggering = true;
+    			while(!queue.isEmpty()){
+					TaskQ.poll().start();
+				}
   			} finally {
     			lock.unlock();
   			}
-			while(!queue.isEmpty()){
-				TaskQ.poll().start();
-			}
-			Istriggering = true;
 		}
 
 	}

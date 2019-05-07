@@ -1,36 +1,35 @@
 import java.util.*;
 
 public class Quora{
-
+	
 	public static void main(String[] args) {
 		// String input = "abannnnwbwebbbneeas";
 		// String res =  rearrangeString(input);
 		// System.out.print(res);
 	}
 
-
 	public static List<String> breakString(String s){
-
+		List<String> res = new ArrayList<>();
 		StringBuilder  sb = new StringBuilder();
-		for(int i = 0 ;= i < s.length;){
+		for(int i = 0 ; i < s.length();){
 			char c = s.charAt(i);
 			if(c == '"'){
 				++i;
-				while(i < s.length && s.charAt(i) != ' " '){
+				while(i < s.length() && s.charAt(i) != '"'){
 					sb.append(s.charAt(i++));
 				}
-				if(sb.length != 0){
-					res.add(sb.toString);
+				if(sb.length() != 0){
+					res.add(sb.toString());
 				}
 				sb = new StringBuilder();
 			}else if(c == ' '){
-				while()
+				//while()
 				sb = new StringBuilder();
 			}else{
 
 			}
 		}
-
+		return res;
 	}
 
 	// 2019 - 4 - 7 / 2019 - 2 - 21
@@ -118,7 +117,6 @@ public class Quora{
 		memo.put(index,res);
 		return res;	
 	}
-	
 
 	public static int getResult(int[]memo, int index){
 		if(index >= memo.length){
@@ -136,7 +134,7 @@ public class Quora{
 	}
 
 	//用动态map
-	private static void buildMemo(TreeMap<Integer,Integer>memo,int[] arr){
+	private static void buildMemo(TreeMap<Integer,Integer> memo, int[] arr){
 		for(int i : arr){
 			memo.put(i,memo.getOrDefault(i, 0) + 1);
 		}
@@ -201,6 +199,7 @@ public class Quora{
 		}
 		return false;
 	}
+	
 	public static boolean checkVaild(char[] c){
 		for(int i = 0; i < c.length - 1; ++i){
 			if(c[i] == c[i+1]) return false;
@@ -267,7 +266,7 @@ public class Quora{
 		int left = 0 , right = arr.length - 1;
 		while(left <= right){
 			int mid = left + (right - left) / 2;
-			if( arr[mid - 1] < arr[mid] && arr[mid + 1] < arr[mid] ){
+			if( arr[mid - 1] < arr[mid] && arr[mid + 1] < arr[mid]){
 				return mid;
 			}else{
 				if(arr[mid - 1] > arr[mid]){
@@ -712,5 +711,19 @@ public class Quora{
 	public static String getNum(int n) {
 		return Integer.toBinaryString(n + 1).substring(1);
 	}
+
+
+	//LC 168. Excel Sheet Column Title
+	public String convertToTitle(int n) {
+        StringBuilder sb = new StringBuilder();
+        while(n > 0){
+            int cur = --n % 26;
+            sb.insert(0,(char)('A'+ cur));
+            n /= 26;
+        }
+        return sb.toString();
+    }
+
+
 
 }
